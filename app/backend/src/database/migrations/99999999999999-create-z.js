@@ -3,11 +3,11 @@ module.exports = {
     await queryInterface.createTable('trybe_eval', {
       id: {
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.DataTypes.INTEGER,
       }
     });
   },
-  down: async (queryInterface) => {
+  down: async (queryInterface) => { 
     await queryInterface.dropTable('trybe_eval');
   },
 };
