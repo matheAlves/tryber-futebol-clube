@@ -4,6 +4,7 @@ import bcrypt = require('bcryptjs');
 import { Login } from '../interfaces';
 
 export default class AuthService {
+  // method not in use since requirements asked for specific error messages different from Joi's, so req body is being verified in controller and throwing a custom error.
   static async validateLoginReqBody(body: Login): Promise<void> {
     const schema = Joi.object({
       email: Joi.string().email().required(),
@@ -23,19 +24,19 @@ export default class AuthService {
     });
   }
 
-  static async generateToken(email: string): Promise<string> {
-    const token = jwt.sign(email, 'bigSecret');
+  static async generateToken(user: Login): Promise<string> {
+    const token = jwt.sign(user, 'bigSecret');
     return token;
   }
 
-  // async readToken(payload: Token) {
-  //   try {
-  //     const data = jwt.verify(payload.token, this.secret);
-  //     return data;
-  //   } catch (_err) {
-  //     const e = new Error('Invalid token');
-  //     e.name = 'InvalidCredentials';
-  //     throw e;
-  //   }
-  // }
+  static async readToken(token: string) {
+    try {
+      const data = jwt.verify(token, 'bigSecret');
+      return data;
+    } catch (_err) {
+      const e = new Error('Invalid token');
+      e.name = 'InvalidCredentials';
+      throw e;
+    }
+  }
 }

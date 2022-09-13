@@ -13,4 +13,16 @@ export default class UserService {
     e.name = 'invalidCredentials';
     throw e;
   }
+
+  static async getRoleByEmail(email: string) {
+    const result = await UserModel.findOne({
+      where: { email },
+      raw: true,
+    });
+    if (result) return result.role;
+
+    const e = new Error('Incorrect email or password');
+    e.name = 'invalidCredentials';
+    throw e;
+  }
 }
