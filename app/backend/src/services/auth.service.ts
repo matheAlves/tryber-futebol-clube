@@ -25,13 +25,15 @@ export default class AuthService {
   }
 
   static async generateToken(user: Login): Promise<string> {
-    const token = jwt.sign(user, 'bigSecret');
+    const secret = process.env.JWT_SECRET || 'jwt_secret';
+    const token = jwt.sign(user, secret);
     return token;
   }
 
   static async readToken(token: string) {
+    const secret = process.env.JWT_SECRET || 'jwt_secret';
     try {
-      const data = jwt.verify(token, 'bigSecret');
+      const data = jwt.verify(token, secret);
       return data;
     } catch (_err) {
       const e = new Error('Invalid token');
