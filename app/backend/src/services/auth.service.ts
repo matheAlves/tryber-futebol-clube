@@ -4,14 +4,18 @@ import bcrypt = require('bcryptjs');
 import { Login } from '../interfaces';
 
 export default class AuthService {
-  // method not in use since requirements asked for specific error messages different from Joi's, so req body is being verified in controller and throwing a custom error.
   static async validateLoginReqBody(body: Login): Promise<void> {
     const schema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().required(),
     });
-
-    await schema.validateAsync(body);
+    try {
+      await schema.validateAsync(body);
+    } catch (e) {
+      const err = new Error('All fields must be filled');
+      err.name = 'missingCredentials';
+      throw err;
+    }
   }
 
   static async checkPassword(password: string, hash: string) {
