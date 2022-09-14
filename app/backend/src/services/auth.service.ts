@@ -18,7 +18,7 @@ export default class AuthService {
     }
   }
 
-  static async checkPassword(password: string, hash: string) {
+  static async checkPassword(password: string, hash: string): Promise<void> {
     await bcrypt.compare(password, hash).then((passwordCheck) => {
       if (passwordCheck === false) {
         const e = new Error('Incorrect email or password');

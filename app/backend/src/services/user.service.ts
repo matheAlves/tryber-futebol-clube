@@ -2,7 +2,7 @@
 import UserModel from '../database/models/user.model';
 
 export default class UserService {
-  static async checkEmailExists(reqEmail: string) {
+  static async checkEmailExists(reqEmail: string): Promise<string> {
     const result = await UserModel.findOne({
       where: { email: reqEmail },
       raw: true,
@@ -14,7 +14,7 @@ export default class UserService {
     throw e;
   }
 
-  static async getRoleByEmail(email: string) {
+  static async getRoleByEmail(email: string): Promise<string> {
     const result = await UserModel.findOne({
       where: { email },
       raw: true,
