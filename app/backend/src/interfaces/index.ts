@@ -3,11 +3,14 @@ export interface Login {
   password?: string;
 }
 
-export interface Match {
-  homeTeam: number;
-  awayTeam: number;
+export interface Score {
   homeTeamGoals: number;
   awayTeamGoals: number;
+}
+
+export interface Match extends Score {
+  homeTeam: number;
+  awayTeam: number;
   inProgress?: boolean;
   teamHome?: object;
   teamAway?: object;

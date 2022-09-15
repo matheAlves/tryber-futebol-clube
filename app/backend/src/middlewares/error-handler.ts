@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 const errors: Record<string, number> = {
   missingCredentials: 400,
   invalidCredentials: 401,
+  notFound: 404,
 };
 
 const errorHandler = (
