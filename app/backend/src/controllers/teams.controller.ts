@@ -6,4 +6,9 @@ export default class TeamsController {
     const list = await TeamModel.findAll();
     res.status(200).json(list);
   }
+
+  static async getById(req: Request, res: Response) {
+    const team = await TeamModel.findByPk(req.params.id);
+    res.status(200).json(team);
+  }
 }
