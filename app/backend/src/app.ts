@@ -1,6 +1,7 @@
 import 'express-async-errors';
 import * as express from 'express';
 import loginRoute from './routes/login.route';
+import teamsRoute from './routes/teams.route';
 import errorHandler from './middlewares/error-handler';
 
 class App {
@@ -13,6 +14,7 @@ class App {
 
     this.app.get('/', (req, res) => res.json({ ok: true }));
     this.app.use('/login', loginRoute);
+    this.app.use('/teams', teamsRoute);
     this.app.use(errorHandler);
   }
 
