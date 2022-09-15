@@ -5,7 +5,7 @@ async function validateToken(req: Request, res: Response, next: NextFunction) {
   const token = req.headers.authorization;
   if (!token) {
     const err = new Error('Token not found');
-    err.name = 'InvalidCredentials';
+    err.name = 'invalidCredentials';
     throw err;
   }
   const user = await AuthService.readToken(token);

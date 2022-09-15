@@ -1,4 +1,3 @@
-// import jwt = require('jsonwebtoken');
 import UserModel from '../database/models/user.model';
 
 export default class UserService {

@@ -34,14 +34,14 @@ export default class AuthService {
     return token;
   }
 
-  static async readToken(token: string) {
+  static async readToken(token: string): Promise<Login> {
     const secret = process.env.JWT_SECRET || 'jwt_secret';
     try {
       const data = jwt.verify(token, secret);
-      return data;
+      return data as Login;
     } catch (_err) {
-      const e = new Error('Invalid token');
-      e.name = 'InvalidCredentials';
+      const e = new Error('Token must be a valid token');
+      e.name = 'invalidCredentials';
       throw e;
     }
   }

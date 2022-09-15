@@ -1,21 +1,14 @@
 import { Request, Response } from 'express';
-import MatchModel from '../database/models/match.model';
-import TeamModel from '../database/models/team.model';
+import MatchesService from '../services/matches.service';
 
 export default class MatchesController {
-  static async list(req: Request, res: Response) {
-    const list = await MatchModel.findAll({
-      include: [{
-        model: TeamModel,
-        as: 'teamHome',
-        attributes: ['teamName'],
-      },
-      {
-        model: TeamModel,
-        as: 'teamAway',
-        attributes: ['teamName'],
-      }],
-    });
-    res.status(200).json(list);
+  static async list(_req: Request, res: Response) {
+    const matches = await MatchesService.list();
+    res.status(200).json(matches);
+  }
+
+  static async add(req: Request, res: Response) {
+    const response = await MatchesService.add(req.body);
+    res.status(201).json(response);
   }
 }
