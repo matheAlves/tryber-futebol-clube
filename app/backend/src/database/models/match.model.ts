@@ -1,4 +1,4 @@
-import { Model, INTEGER } from 'sequelize';
+import { Model, INTEGER, BOOLEAN } from 'sequelize';
 import TeamModel from './team.model';
 import db from '.';
 
@@ -8,10 +8,10 @@ class MatchModel extends Model {
   public homeTeamGoals!: number;
   public awayTeam!: number;
   public awayTeamGoals!: number;
-  public inProgress!: number;
+  public inProgress!: boolean;
 }
 
-TeamModel.init({
+MatchModel.init({
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -36,7 +36,7 @@ TeamModel.init({
   },
   inProgress: {
     allowNull: false,
-    type: INTEGER,
+    type: BOOLEAN,
   },
 }, {
   underscored: true,
@@ -50,10 +50,10 @@ TeamModel.init({
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
 
-TeamModel.belongsTo(MatchModel, { foreignKey: 'id', as: 'teamHome' });
-TeamModel.belongsTo(MatchModel, { foreignKey: 'id', as: 'teamAway' });
+TeamModel.hasMany(MatchModel, { foreignKey: 'homeTeam', as: 'teamHome' });
+TeamModel.hasMany(MatchModel, { foreignKey: 'awayTeam', as: 'teamAway' });
 
-MatchModel.hasMany(TeamModel, { foreignKey: 'homeTeam', as: 'match' });
-MatchModel.hasMany(TeamModel, { foreignKey: 'awayTeam', as: 'match' });
+MatchModel.belongsTo(TeamModel, { foreignKey: 'homeTeam', as: 'teamHome' });
+MatchModel.belongsTo(TeamModel, { foreignKey: 'awayTeam', as: 'teamAway' });
 
 export default MatchModel;
