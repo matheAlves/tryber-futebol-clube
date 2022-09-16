@@ -2,41 +2,6 @@ import { Match, TeamStats, statsTemplate } from '../interfaces/index';
 import TeamModel from '../database/models/team.model';
 
 export default class LeaderboardService {
-  // static async calcAll(t: TeamModel, matches: Match[]) {
-  //   const result = { ...t, ...statsTemplate };
-  //   matches.forEach((m) => {
-  //     if (Number(t.id) === Number(m.homeTeam)) {
-  //       result.totalGames += 1;
-  //       result.goalsFavor += m.homeTeamGoals;
-  //       result.goalsOwn += m.awayTeamGoals;
-  //       if (m.homeTeamGoals > m.awayTeamGoals) result.totalVictories += 1;
-  //       else if (m.homeTeamGoals < m.awayTeamGoals) result.totalLosses += 1;
-  //       else result.totalDraws += 1;
-  //     } else if (Number(t.id) === Number(m.awayTeam)) {
-  //       result.totalGames += 1;
-  //       result.goalsFavor += m.awayTeamGoals;
-  //       result.goalsOwn += m.homeTeamGoals;
-  //       if (m.awayTeamGoals > m.homeTeamGoals) result.totalVictories += 1;
-  //       else if (m.awayTeamGoals < m.homeTeamGoals) result.totalLosses += 1;
-  //       else result.totalDraws += 1;
-  //     }
-  //   });
-  //   const { teamName, id, ...stats } = result;
-  //   stats.name = teamName;
-  //   return stats;
-  // }
-
-  static async calc(currStat: TeamStats, match: Match) {
-    const newStat = currStat;
-    newStat.totalGames += 1;
-    newStat.goalsFavor += match.homeTeamGoals;
-    newStat.goalsOwn += match.awayTeamGoals;
-    if (match.homeTeamGoals > match.awayTeamGoals) newStat.totalVictories += 1;
-    else if (match.homeTeamGoals < match.awayTeamGoals) newStat.totalLosses += 1;
-    else newStat.totalDraws += 1;
-    return newStat;
-  }
-
   static async sumHomeAway(home: TeamStats[], away: TeamStats[]): Promise<TeamStats[]> {
     const result = home;
     home.forEach((t1, index) => {
@@ -55,16 +20,6 @@ export default class LeaderboardService {
     });
     return result as TeamStats[];
   }
-
-  // static async allMatchesStats(teams: TeamModel[], matches: Match[]) {
-  //   const calc = Promise.all(
-  //     teams.map((t) => {
-  //       const result = LeaderboardService.calcAll(t, matches);
-  //       return result;
-  //     }),
-  //   );
-  //   return calc;
-  // }
 
   static async calcHome(team: TeamModel, matches: Match[]) {
     const result = { ...team, ...statsTemplate };
