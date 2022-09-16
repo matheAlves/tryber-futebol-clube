@@ -8,6 +8,7 @@ export default class MatchesController {
   }
 
   static async add(req: Request, res: Response) {
+    await MatchesService.teamsValidation(req.body);
     const response = await MatchesService.add(req.body);
     res.status(201).json(response);
   }

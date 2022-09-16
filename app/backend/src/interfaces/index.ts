@@ -15,3 +15,8 @@ export interface Match extends Score {
   teamHome?: object;
   teamAway?: object;
 }
+
+export interface Team {
+  id: number;
+  teamName: string;
+}

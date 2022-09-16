@@ -19,22 +19,29 @@ export default class MatchesService {
     return list;
   }
 
-  static async add(match: Match): Promise<Match> {
+  static async checkTeamExists(id: number) {
+    const team = await TeamModel.findOne({ where: { id } });
+    return team;
+  }
+
+  static async teamsValidation(match: Match) {
     const { homeTeam, awayTeam } = match;
     if (homeTeam === awayTeam) {
       const e = new Error('It is not possible to create a match with two equal teams');
       e.name = 'invalidCredentials';
       throw e;
     }
-    Promise.all([homeTeam, awayTeam].map((id) => {
-      const result = TeamModel.findOne({ where: { id } });
-      if (result instanceof TeamModel) {
-        return result;
-      }
+    const [home, away] = await Promise.all(
+      [homeTeam, awayTeam].map((id) => MatchesService.checkTeamExists(id)),
+    );
+    if (!home || !away) {
       const e = new Error('There is no team with such id!');
       e.name = 'notFound';
       throw e;
-    }));
+    }
+  }
+
+  static async add(match: Match): Promise<Match> {
     const queryResult = await MatchModel.create({ ...match, inProgress: 1 });
     return queryResult;
   }
