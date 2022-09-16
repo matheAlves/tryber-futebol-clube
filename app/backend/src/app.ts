@@ -1,6 +1,7 @@
 import * as express from 'express';
 import 'express-async-errors';
 import errorHandler from './middlewares/error-handler';
+import leaderboardRoute from './routes/leaderboard.route';
 import loginRoute from './routes/login.route';
 import teamsRoute from './routes/teams.route';
 import matchesRoute from './routes/matches.route';
@@ -14,6 +15,7 @@ class App {
     this.config();
 
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.use('/leaderboard', leaderboardRoute);
     this.app.use('/login', loginRoute);
     this.app.use('/matches', matchesRoute);
     this.app.use('/teams', teamsRoute);
