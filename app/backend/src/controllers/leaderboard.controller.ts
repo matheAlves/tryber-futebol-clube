@@ -11,7 +11,31 @@ export default class LeaderboardController {
     const finishedMatches = allMatches.filter((match: Match) => match.inProgress === false);
     const homeMatchesStats = await LeaderboardService.homeMatchesStats(teams, finishedMatches);
     const addPtsAndEfficiency = await LeaderboardService.calcPoints(homeMatchesStats);
-    const orderedTable = await LeaderboardService.order(addPtsAndEfficiency);
+    const orderedTable = await LeaderboardService.orderTable(addPtsAndEfficiency);
+
+    res.status(200).json(orderedTable);
+  }
+
+  static async getAwayTable(req: Request, res: Response) {
+    const teams = await TeamsService.list();
+    const allMatches = await MatchesService.list();
+    const finishedMatches = allMatches.filter((match: Match) => match.inProgress === false);
+    const awayMatchesStats = await LeaderboardService.awayMatchesStats(teams, finishedMatches);
+    const addPtsAndEfficiency = await LeaderboardService.calcPoints(awayMatchesStats);
+    const orderedTable = await LeaderboardService.orderTable(addPtsAndEfficiency);
+
+    res.status(200).json(orderedTable);
+  }
+
+  static async getAllTable(req: Request, res: Response) {
+    const teams = await TeamsService.list();
+    const allMatches = await MatchesService.list();
+    const finishedMatches = allMatches.filter((match: Match) => match.inProgress === false);
+    const homeMatchesStats = await LeaderboardService.homeMatchesStats(teams, finishedMatches);
+    const awayMatchesStats = await LeaderboardService.awayMatchesStats(teams, finishedMatches);
+    const totalStats = await LeaderboardService.sumHomeAway(homeMatchesStats, awayMatchesStats);
+    const addPtsAndEfficiency = await LeaderboardService.calcPoints(totalStats);
+    const orderedTable = await LeaderboardService.orderTable(addPtsAndEfficiency);
 
     res.status(200).json(orderedTable);
   }
